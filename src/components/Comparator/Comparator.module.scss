@@ -17,7 +17,7 @@
         }
     }
 
-    textarea {
+    .textArea {
         width: 80%; // Ajuste para el gap
         height: 200px; // Altura fija para una mejor visualización
         margin: 10px 0;
@@ -32,6 +32,11 @@
             outline: none;
             border-color: #58a6ff;
         }
+    }
+
+    .highlight {
+        background-color: #ffa33a; // Color para resaltar diferencias
+        color: black;
     }
 
     button {
