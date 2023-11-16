@@ -31,11 +31,39 @@ const Comparator = () => {
       diffEditor.getModifiedEditor().addAction({
         id: 'my-unique-id',
         label: 'Move Change Left',
-        keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+        keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
         contextMenuGroupId: '9_cutcopypaste',
         contextMenuOrder: 1,
         run: function (editor) {
-          // Implementar lógica para mover el cambio
+          // Obtener la selección actual
+          const selection = editor.getSelection();
+          const modifiedModel = editor.getModel();
+          const originalModel = diffEditor.getOriginalEditor().getModel();
+        
+          if (selection && modifiedModel && originalModel) {
+            // Obtener el texto seleccionado
+            const text = modifiedModel.getValueInRange(selection);
+        
+            // Calcular la posición de inserción en el modelo original
+            const insertPosition = {
+              lineNumber: selection.startLineNumber,
+              column: 1 // Inicio de la línea
+            };
+        
+            // Insertar el texto en el modelo original
+            originalModel.pushEditOperations([], [{
+              range: new monaco.Range(insertPosition.lineNumber, insertPosition.column, insertPosition.lineNumber, insertPosition.column),
+              text: text,
+              forceMoveMarkers: true
+            }], () => null);
+        
+            // Opcional: eliminar el texto del modelo modificado
+            modifiedModel.pushEditOperations([], [{
+              range: selection,
+              text: null,
+              forceMoveMarkers: true
+            }], () => null);
+          }
         }
       });
 
@@ -43,10 +71,20 @@ const Comparator = () => {
     }
   }, [monaco, inputOne, inputTwo, language]);
 
+
+  const handleInputOneChange = (newValue: string | undefined) => {
+    setInputOne(newValue ?? '');
+  };
+
+  const handleInputTwoChange = (newValue: string | undefined) => {
+    setInputTwo(newValue ?? '');
+  };
+
   return (
     <div className={styles.comparator}>
       <select onChange={(e) => setLanguage(e.target.value)} value={language}>
         <option value="javascript">JavaScript</option>
+        <option value="typescript">TypeScript</option>
         <option value="python">Python</option>
         <option value="java">Java</option>
       </select>
@@ -55,14 +93,14 @@ const Comparator = () => {
           height="400px"
           language={language}
           value={inputOne}
-          onChange={setInputOne}
+          onChange={handleInputOneChange}
           options={{ lineNumbers: 'on' }}
         />
         <MonacoEditor
           height="400px"
           language={language}
           value={inputTwo}
-          onChange={setInputTwo}
+          onChange={handleInputTwoChange}
           options={{ lineNumbers: 'on' }}
         />
       </div>

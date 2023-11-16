@@ -2,22 +2,36 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center; // Centrar en pantallas pequeñas
     justify-content: center;
     gap: 20px;
-
 
     .boxContainer {
         display: flex;
         width: 100%;
         gap: 20px;
+        flex-direction: column; // Apilar verticalmente en todos los tamaños de pantalla
 
-        @media (max-width: 768px) {
-            flex-direction: column;
+        @media (min-width: 768px) {
+            flex-direction: row; // Disposición en fila para pantallas más grandes
+        }
+    }
+
+
+    select {
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #1e1e1e;
         }
     }
 
     .diffEditor {
         text-align: left;
-      }
+        width: 100%; // Asegurar que ocupe todo el ancho disponible
+    }
+    .monaco-editor {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
 }
