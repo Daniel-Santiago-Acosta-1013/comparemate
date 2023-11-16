@@ -8,7 +8,7 @@ const Comparator = () => {
   const [language, setLanguage] = useState('javascript');
   const monaco = useMonaco();
   const editorRef = useRef(null);
-  
+
   useEffect(() => {
     if (monaco && editorRef.current) {
       const originalModel = monaco.editor.createModel(inputOne, language);
@@ -17,7 +17,7 @@ const Comparator = () => {
       const diffEditor = monaco.editor.createDiffEditor(editorRef.current, {
         readOnly: false,
         automaticLayout: true,
-        theme: 'vs-dark', // Modo oscuro
+        theme: 'vs-dark',
         enableSplitViewResizing: true,
         renderSideBySide: true
       });
@@ -27,40 +27,31 @@ const Comparator = () => {
         modified: modifiedModel
       });
 
-      // Funcionalidad para mover diferencias de un lado a otro
       diffEditor.getModifiedEditor().addAction({
-        id: 'my-unique-id',
+        id: 'move-change-left',
         label: 'Move Change Left',
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS],
         contextMenuGroupId: '9_cutcopypaste',
         contextMenuOrder: 1,
         run: function (editor) {
-          // Obtener la selección actual
           const selection = editor.getSelection();
           const modifiedModel = editor.getModel();
           const originalModel = diffEditor.getOriginalEditor().getModel();
-        
+
           if (selection && modifiedModel && originalModel) {
-            // Obtener el texto seleccionado
             const text = modifiedModel.getValueInRange(selection);
-        
-            // Calcular la posición de inserción en el modelo original
-            const insertPosition = {
-              lineNumber: selection.startLineNumber,
-              column: 1 // Inicio de la línea
-            };
-        
-            // Insertar el texto en el modelo original
+            const lineCount = modifiedModel.getLineCount();
+            const lastLineLength = modifiedModel.getLineLength(lineCount);
+
             originalModel.pushEditOperations([], [{
-              range: new monaco.Range(insertPosition.lineNumber, insertPosition.column, insertPosition.lineNumber, insertPosition.column),
-              text: text,
+              range: new monaco.Range(1, 1, lineCount, lastLineLength + 1),
+              text: text + '\n' + originalModel.getValue(),
               forceMoveMarkers: true
             }], () => null);
         
-            // Opcional: eliminar el texto del modelo modificado
             modifiedModel.pushEditOperations([], [{
               range: selection,
-              text: null,
+              text: '',
               forceMoveMarkers: true
             }], () => null);
           }
@@ -70,7 +61,6 @@ const Comparator = () => {
       return () => diffEditor.dispose();
     }
   }, [monaco, inputOne, inputTwo, language]);
-
 
   const handleInputOneChange = (newValue: string | undefined) => {
     setInputOne(newValue ?? '');
@@ -104,10 +94,7 @@ const Comparator = () => {
           options={{ lineNumbers: 'on' }}
         />
       </div>
-      
       <div ref={editorRef} className={styles.diffEditor} style={{ height: '400px', width: '100%' }} />
-
-      
     </div>
   );
 };
