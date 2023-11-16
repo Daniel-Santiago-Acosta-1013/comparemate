@@ -78,6 +78,7 @@ const Comparator = () => {
           <option value="typescript">TypeScript</option>
           <option value="python">Python</option>
           <option value="java">Java</option>
+          <option value="plain">Texto Plano</option>
         </select>
       </div>
       <div className={styles.boxContainer}>
