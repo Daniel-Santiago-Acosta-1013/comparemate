@@ -17,46 +17,7 @@
         }
     }
 
-    .textArea {
-        width: 80%; // Ajuste para el gap
-        height: 200px; // Altura fija para una mejor visualización
-        margin: 10px 0;
-        padding: 10px;
-        border: 1px solid #21262d;
-        border-radius: 6px;
-        background-color: #161b22;
-        color: #c9d1d9;
-        resize: vertical; // Permite al usuario cambiar la altura del textarea
-
-        &:focus {
-            outline: none;
-            border-color: #58a6ff;
-        }
-    }
-
-    .highlight {
-        background-color: #ffa33a; // Color para resaltar diferencias
-        color: black;
-    }
-
-    button {
-        margin: 10px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        background-color: #238636;
-        color: white;
-        cursor: pointer;
-        font-size: 16px;
-
-        &:hover {
-            background-color: #2ea043;
-        }
-    }
-
-    .result {
-        width: 100%;
-        margin-top: 20px;
-        color: #8b949e;
-    }
+    .diffEditor {
+        text-align: left;
+      }
 }
