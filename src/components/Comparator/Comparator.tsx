@@ -48,7 +48,7 @@ const Comparator = () => {
               text: text + '\n' + originalModel.getValue(),
               forceMoveMarkers: true
             }], () => null);
-        
+
             modifiedModel.pushEditOperations([], [{
               range: selection,
               text: '',
@@ -72,12 +72,14 @@ const Comparator = () => {
 
   return (
     <div className={styles.comparator}>
-      <select onChange={(e) => setLanguage(e.target.value)} value={language}>
-        <option value="javascript">JavaScript</option>
-        <option value="typescript">TypeScript</option>
-        <option value="python">Python</option>
-        <option value="java">Java</option>
-      </select>
+      <div className={styles.customSelect}>
+        <select onChange={(e) => setLanguage(e.target.value)} value={language} className={styles.select}>
+          <option value="javascript">JavaScript</option>
+          <option value="typescript">TypeScript</option>
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+        </select>
+      </div>
       <div className={styles.boxContainer}>
         <MonacoEditor
           height="400px"

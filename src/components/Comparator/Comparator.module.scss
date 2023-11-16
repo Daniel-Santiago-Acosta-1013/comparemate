@@ -17,12 +17,34 @@
         }
     }
 
+    .customSelect {
+        position: relative;
+        width: 200px;
 
-    select {
-        transition: background-color 0.3s ease;
+        &::after {
+            content: '▼';
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            pointer-events: none;
+            transform: translateY(-50%);
+        }
+    }
 
-        &:hover {
-            background-color: #1e1e1e;
+    .select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        appearance: none; // Esto es para quitar el estilo por defecto del navegador
+        background-color: #0d1117;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+            border-color: #58a6ff;
         }
     }
 
@@ -30,6 +52,7 @@
         text-align: left;
         width: 100%; // Asegurar que ocupe todo el ancho disponible
     }
+
     .monaco-editor {
         border-radius: 10px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
